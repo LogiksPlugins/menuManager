@@ -1,0 +1,117 @@
+{
+	"source": {
+		"type": "sql",
+		"table": "lgks_links",
+		"where": ["md5(id)"],
+    "dbkey":true
+	},
+    "dbkey":true,
+	"forcefill": {
+		"guid": "#SESS_GUID#",
+		"site": "*"
+	},
+	"gotolink": "infoview/form/{hashid}?",
+	"fields": {
+		"menuid": {
+			"label": "MenuGroup",
+			"group": "Info",
+			"required": true
+		},
+		"title": {
+			"label": "Title",
+			"group": "Info",
+			"required": true
+		},
+		"link": {
+			"label": "Link",
+			"group": "Info",
+			"required": true
+		},
+		"menugroup": {
+			"label": "Group",
+			"group": "Info",
+      "type": "dataSelectorFromTable",
+			"table": "lgks_links",
+			"columns": "title as title ,id as value",
+			"where": {
+				"(menugroup IS NULL OR length(menugroup)=0 OR menugroup='/') AND link='#'": "RAW"
+			},
+      "dbkey":true
+		},
+		"category": {
+			"label": "Subgroup",
+			"group": "Info"
+		},
+		"class": {
+			"label": "Class",
+			"group": "Info"
+		},
+		"iconpath": {
+			"label": "Icon (Class/Path)",
+			"group": "Info"
+		},
+		"tips": {
+			"label": "Tooltip",
+			"group": "Info"
+		},
+		"weight": {
+			"label": "Weight/Ordering",
+			"group": "Info",
+			"type": "number",
+			"default": 0
+		},
+		"privilege": {
+			"label": "Privilege Level",
+			"group": "Admin",
+			"default": "*"
+		},
+		"device": {
+			"label": "Device",
+			"group": "Admin",
+			"type": "select",
+			"options": {
+				"*": "All",
+				"PC": "PC",
+				"Mobile": "Mobile",
+				"Tablet": "Tablet"
+			},
+			"multiple": true
+		},
+		"target": {
+			"label": "Target",
+			"group": "Admin",
+			"type": "select",
+			"options": {
+				"blank": "blank",
+				"_blank": "_blank",
+				"_parent": "_parent",
+				"_self": "_self",
+				"_top": "_top"
+			}
+		},
+		"onmenu": {
+			"label": "On Menu",
+			"group": "Admin",
+			"type": "select",
+			"options": {
+				"": "Select Status",
+				"false": "False",
+				"true": "True"
+			},
+			"required": true,
+			"default": "true"
+		},
+		"blocked": {
+			"label": "Block",
+			"group": "Admin",
+			"type": "select",
+			"vmode": "edit",
+			"options": {
+				"": "Select Status",
+				"false": "False",
+				"true": "True"
+			},
+			"required": true
+		}
+	}
+}

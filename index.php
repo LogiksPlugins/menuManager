@@ -9,7 +9,17 @@ loadModule("datagrid");
 
 if(!isset($_REQUEST['MENUID'])) $_REQUEST['MENUID']="default";
 
-$dataMenus=_db()->_selectQ(_dbTable("links"),"menuid as title,count(*) as max",["menuid"=>[",","notlike"]])->_groupBy("menuid")->_GET();
+$dbkey = "app";
+if(isAdminSite(CMS_SITENAME)) {
+  $dbkey = true;
+  $report=$basePath."report_cms.json";
+  $form=$basePath."form_cms.json";
+  if($_REQUEST['MENUID']=="default") {
+    $_REQUEST['MENUID']="cms";
+  }
+}
+
+$dataMenus=_db($dbkey)->_selectQ(_dbTable("links",$dbkey),"menuid as title,count(*) as max",["menuid"=>[",","notlike"]])->_groupBy("menuid")->_GET();
 
 if(!function_exists("getGroupDropdown")) {
     function getGroupDropdown($autoSelect=true) {
@@ -19,16 +29,16 @@ if(!function_exists("getGroupDropdown")) {
         $sqlData=$sql->_GET();
     
     	if($autoSelect) {
-			foreach($sqlData as $p) {
-				if($p['group_name']==$_SESSION['SESS_GROUP_NAME'])
-					$html[]="<option value='{$p['group_name']}' selected>{$p['group_name']}</option>";
-				else
-					$html[]="<option value='{$p['group_name']}'>{$p['group_name']}</option>";
-			}
+        foreach($sqlData as $p) {
+          if($p['group_name']==$_SESSION['SESS_GROUP_NAME'])
+            $html[]="<option value='{$p['group_name']}' selected>{$p['group_name']}</option>";
+          else
+            $html[]="<option value='{$p['group_name']}'>{$p['group_name']}</option>";
+        }
     	} else {
-			foreach($sqlData as $p) {
-				$html[]="<option value='{$p['group_name']}'>{$p['group_name']}</option>";
-			}
+        foreach($sqlData as $p) {
+          $html[]="<option value='{$p['group_name']}'>{$p['group_name']}</option>";
+        }
     	}
         
     	return implode("",$html);
@@ -39,7 +49,7 @@ if(!function_exists("getGroupDropdown")) {
 <div class='col-xs-12 col-md-12 col-lg-12'>
 	<div class='row'>
 		<?php
-			printDataGrid($report,$form,$form,["slug"=>"subtype/type/refid","glink"=>_link("modules/menuManager","a=2")."&MENUID={$_REQUEST['MENUID']}","add_record"=>"Add","add_class"=>'btn btn-info'],"app");
+			printDataGrid($report,$form,$form,["slug"=>"subtype/type/refid","glink"=>_link("modules/menuManager","a=2")."&MENUID={$_REQUEST['MENUID']}","add_record"=>"Add","add_class"=>'btn btn-info'],$dbkey);
 		?>
 	</div>
 </div>

@@ -18,6 +18,13 @@
 		},
 		"limit": 20
 	},
+	"actions":{
+        "previewMenu":{
+          "icon":"fa fa-eye",
+          "tips":"Preview Menu",
+          "label":"Preview"
+        }
+    },
 	"datagrid": {
 		"id": {
 			"label": "ID",

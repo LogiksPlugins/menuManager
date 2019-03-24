@@ -44,8 +44,27 @@ if(!function_exists("getGroupDropdown")) {
     	return implode("",$html);
     }
 }
-?>
 
+if(!function_exists("getPrivilegeDropdown")) {
+  function getPrivilegeDropdown($id=false) {
+        $list=getPrivilegeList();
+        $html=[];
+        if($id) {
+            foreach($list as $p) {
+                $html[]="<option value='{$p['id']}'>{$p['name']}</option>";
+            }
+        } else {
+            foreach($list as $p) {
+                $html[]="<option value='{$p['name']}'>{$p['name']}</option>";
+            }
+        }
+        return implode("",$html);
+    }
+}
+
+echo _css("menuManager");
+echo _js("menuManager");
+?>
 <div class='col-xs-12 col-md-12 col-lg-12'>
 	<div class='row'>
 		<?php
@@ -53,14 +72,19 @@ if(!function_exists("getGroupDropdown")) {
 		?>
 	</div>
 </div>
-<style>
-.control-toolbar select.form-control {
-    width: 200px;
-    height: 97%;
-    margin-right: 10px;
-    margin-left: -10px;
-}
-</style>
+<div id='previewMenu' class='preview-menu container fade' onselectstart="return false;" style='right:-300px;'>
+  <div class='row'>
+    <select id='userRoleModelList' class='form-control select' onchange="loadMenuList()">
+      <option value='<?=$_SESSION['SESS_PRIVILEGE_ID']?>'>My Privilege</option>
+      <option value='-1'>No Permission Configured</option>
+      <option value='-2'>Scope Controlled</option>
+      <?=getPrivilegeDropdown(true)?>
+    </select>
+  </div>
+  <div id='menuTree' class='menuTree'>
+    
+  </div>
+</div>
 <script>
 var menuGroups=<?=json_encode($dataMenus)?>;
 $(function() {
@@ -77,4 +101,22 @@ $(function() {
         window.location=uri;
     });
 });
+function previewMenu() {
+  if($("#previewMenu").hasClass("in")) {
+    $("#previewMenu").removeClass("in").css("right","-300px");
+  } else {
+    $("#previewMenu").addClass("in").css("right","0px");
+    loadMenuList();
+  }
+}
+function loadMenuList() {
+  $("#menuTree").html("<div class='text-center'><br><br><i class='fa fa-spinner fa-spin'></i></div>");
+  $("#menuTree").load(_service("menuManager","previewMenu","html")+"&role="+$("#userRoleModelList").val()+"&menugroup="+$("#menuGroups").val(), function() {
+    $("li.menuGroup>a","#menuTree").click(function(e) {
+          e.preventDefault();
+          $(this).closest("li.menuGroup").find(">ul.collapse").toggleClass("in");
+          return false;
+        });
+  });
+}
 </script>

@@ -3,6 +3,12 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 include_once __DIR__."/RoleModelSimulator.inc";
 
+if(isAdminSite(CMS_SITENAME)) {
+    define("DBKEY","core");
+} else {
+    define("DBKEY","app");
+}
+
 switch($_REQUEST["action"]) {
   case "previewMenu":
     loadModuleLib("navigator","api");
@@ -130,12 +136,12 @@ function getMenuContent($menuSrc,$barType=false) {
     }
 }
 
-function getMenuTree($menuid, $menuFolder=false) {
+function getMenuTree($menuid, $menuFolder=false,$dbKey="app") {
   if($menuid=="suites") $menuid="default";
   
-  $menuTree1=_db()->_selectQ("do_links","*",[
+  $menuTree1=_db(DBKEY)->_selectQ(_dbTable("links",DBKEY),"*",[
     "blocked"=>"false"
-  ])->_whereRAW("FIND_IN_SET('default',menuid) AND site IN ('".SITENAME."','*') AND device IN ('*','pc')")
+  ])->_whereRAW("FIND_IN_SET('{$menuid}',menuid) AND site IN ('".SITENAME."','*') AND device IN ('*','pc')")
     ->_orderBy("weight ASC");
   
   switch($_REQUEST['role']) {

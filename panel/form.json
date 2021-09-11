@@ -17,7 +17,8 @@
 			"type": "suggest",
 			"table": "do_links",
 			"columns": "menuid as title ,menuid as value",
-			"groupBy": "menuid"
+			"groupBy": "menuid",
+			"width":12
 		},
 		"groupuid": {
 			"label": "GroupID",
@@ -35,6 +36,10 @@
 			"label": "Link",
 			"group": "Info",
 			"required": true
+		},
+		"tips": {
+			"label": "Tooltip",
+			"group": "Info"
 		},
 		"menugroup": {
 			"label": "Group",
@@ -60,10 +65,7 @@
 			"label": "Icon (Class/Path)",
 			"group": "Info"
 		},
-		"tips": {
-			"label": "Tooltip",
-			"group": "Info"
-		},
+		
 		"weight": {
 			"label": "Weight/Ordering",
 			"group": "Info",

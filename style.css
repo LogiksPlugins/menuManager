@@ -15,7 +15,12 @@
   background: #333;
   border-left: 1px solid #AAA;
 }
-
+.control-primebar {
+    padding-left: 12px;
+}
+.reportTable .table-tools select {
+    height: 34px !important;
+}
 /* ————————————————————–
   Tree core styles
 */

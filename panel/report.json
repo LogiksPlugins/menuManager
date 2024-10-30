@@ -25,6 +25,22 @@
           "label":"Preview"
         }
     },
+    "sidebar":{
+	    "type":"list",
+	    "source":{
+	        "do_links.menugroup":{
+    	        "table":"do_links",
+    	        "cols":"title as title, id as value",
+    	        "where":{
+    	            "(guid='global' OR guid='#SESS_GUID#')":"RAW",
+			        "menuid":["#MENUID#","find"],
+    	            "blocked":"false",
+    	            "link": "#"
+    	        },
+    	        "orderBy": "weight ASC"
+    	    }
+	    }
+	},
 	"datagrid": {
 		"id": {
 			"label": "ID",
@@ -72,11 +88,6 @@
 		},
 		"weight":{
 		    "label": "Weight",
-			"sortable": true,
-			"searchable": true
-		},
-		"menugroup":{
-		    "label": "Menu",
 			"sortable": true,
 			"searchable": true
 		},

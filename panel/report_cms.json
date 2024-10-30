@@ -24,6 +24,20 @@
           "label":"Preview"
         }
     },
+    "sidebar":{
+	    "type":"list",
+	    "source":{
+	        "do_links.menugroup":{
+	            "dbkey": true,
+    	        "table":"lgks_links",
+    	        "cols":"title as title, id as value",
+    	        "where":{
+    	            "blocked":"false",
+    	            "link": "#"
+    	        }
+    	    }
+	    }
+	},
 	"datagrid": {
 		"id": {
 			"label": "ID",
